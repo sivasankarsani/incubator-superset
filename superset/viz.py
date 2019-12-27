@@ -276,9 +276,11 @@ class BaseViz(object):
             is_timeseries = True
 
         granularity = form_data.get("granularity") or form_data.get("granularity_sqla")
-        limit = int(form_data.get("limit") or 0)
+        limit = int(form_data.get("limit") or 100)
         timeseries_limit_metric = form_data.get("timeseries_limit_metric")
         row_limit = int(form_data.get("row_limit") or config["ROW_LIMIT"])
+
+        offset_limit = int(form_data.get('offset_limit') or config['OFFSET_LIMIT'])
 
         # default order direction
         order_desc = form_data.get("order_desc", True)
@@ -319,6 +321,7 @@ class BaseViz(object):
             "groupby": groupby,
             "metrics": metrics,
             "row_limit": row_limit,
+            "offset":offset_limit,
             "filter": self.form_data.get("filters", []),
             "timeseries_limit": limit,
             "extras": extras,
@@ -1296,7 +1299,7 @@ class MultiLineViz(NVD3Viz):
     def get_data(self, df):
         fd = self.form_data
         # Late imports to avoid circular import issues
-        from superset.models.slice import Slice
+        from superset.models.core import Slice
         from superset import db
 
         slice_ids1 = fd.get("line_charts")
@@ -2104,7 +2107,7 @@ class DeckGLMultiLayer(BaseViz):
     def get_data(self, df):
         fd = self.form_data
         # Late imports to avoid circular import issues
-        from superset.models.slice import Slice
+        from superset.models.core import Slice
         from superset import db
 
         slice_ids = fd.get("deck_slices")

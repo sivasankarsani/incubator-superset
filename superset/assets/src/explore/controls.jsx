@@ -1085,9 +1085,23 @@ export const controls = {
   row_limit: {
     type: 'SelectControl',
     freeForm: true,
-    label: t('Row limit'),
+    label: t('ROW LIMIT'),
     validators: [v.integer],
+    description: t(
+      'Max Number of rows, you want to feacth from the source',
+    ),
     default: 10000,
+    choices: formatSelectOptions(ROW_LIMIT_OPTIONS),
+  },
+  offset_limit: {
+    type: 'SelectControl',
+    freeForm: true,
+    label: t('Server Side Pagination'),
+    description: t(
+      'Whether to include the servcer_side pagination as defined in the not grouped by section',
+    ),
+    validators: [v.integer],
+    default: 0,
     choices: formatSelectOptions(ROW_LIMIT_OPTIONS),
   },
 

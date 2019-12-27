@@ -674,6 +674,7 @@ class SqlaTable(Model, BaseDatasource):
         extras=None,
         columns=None,
         order_desc=True,
+        offset=None,
     ) -> SqlaQuery:
         """Querying any sqla table from this common interface"""
         template_kwargs = {
@@ -682,9 +683,12 @@ class SqlaTable(Model, BaseDatasource):
             "metrics": metrics,
             "row_limit": row_limit,
             "to_dttm": to_dttm,
+            "offset":offset,
             "filter": filter,
             "columns": {col.column_name: col for col in self.columns},
         }
+        print("****** getting the sql query****")
+        import pdb;pdb.set_trace()
         template_kwargs.update(self.template_params_dict)
         extra_cache_keys: List[Any] = []
         template_kwargs["extra_cache_keys"] = extra_cache_keys
@@ -862,6 +866,11 @@ class SqlaTable(Model, BaseDatasource):
 
         if row_limit:
             qry = qry.limit(row_limit)
+
+        print("**** offset was getting the values****", offset)
+        print("****** offset was setto ",qry.offset(offset))
+        if offset:
+            qry=qry.offset(offset)
 
         if is_timeseries and timeseries_limit and groupby and not time_groupby_inline:
             if self.database.db_engine_spec.allows_joins:

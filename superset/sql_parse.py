@@ -55,6 +55,7 @@ class ParsedQuery(object):
         self._table_names: Set[str] = set()
         self._alias_names: Set[str] = set()
         self._limit: Optional[int] = None
+        self._offset:Optional[int]= None
 
         logging.info("Parsing with sqlparse statement %s", self.sql)
         self._parsed = sqlparse.parse(self.stripped())
@@ -70,6 +71,9 @@ class ParsedQuery(object):
     @property
     def limit(self) -> Optional[int]:
         return self._limit
+
+    def offset(self) -> Optional[int]:
+        return self._offset
 
     def is_select(self) -> bool:
         return self._parsed[0].get_type() == "SELECT"

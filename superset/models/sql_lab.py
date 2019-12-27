@@ -67,6 +67,7 @@ class Query(Model, ExtraJSONMixin):
     executed_sql = Column(Text)
     # Could be configured in the superset config.
     limit = Column(Integer)
+    offset= Column(Integer)
     select_as_cta = Column(Boolean)
     select_as_cta_used = Column(Boolean, default=False)
 
@@ -109,6 +110,7 @@ class Query(Model, ExtraJSONMixin):
             "executedSql": self.executed_sql,
             "id": self.client_id,
             "limit": self.limit,
+            "offset":self.offset,
             "progress": self.progress,
             "rows": self.rows,
             "schema": self.schema,
